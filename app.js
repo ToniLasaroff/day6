@@ -13,8 +13,11 @@ var app = express();
 const basicAuth = require('express-basic-auth');
 app.use(basicAuth( { authorizer: myAuthorizer, authorizeAsync:true, } ))
 //app.use(basicAuth({users: { 'user': '1234' }}))
+const dotenv = require('dotenv');
+dotenv.config();
+
 function myAuthorizer(username, password, cb){
-    if(username==='admin' && password ==='testi'){
+    if(username===process.env.auth_user && password ===process.env.auth_pass){
         return cb(null, true);
     }
     else{
@@ -27,6 +30,8 @@ const cors = require('cors');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use(helmet());
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
