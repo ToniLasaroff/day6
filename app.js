@@ -1,4 +1,3 @@
-var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -7,7 +6,7 @@ var logger = require('morgan');
 
 var bookRouter = require('./routes/book');
 var customerRouter = require('./routes/customer');
-
+var borrowRouter = require('./routes/borrow');
 var app = express();
 
 const basicAuth = require('express-basic-auth');
@@ -26,9 +25,6 @@ function myAuthorizer(username, password, cb){
 }
 const helmet = require('helmet');
 const cors = require('cors');
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
 app.use(helmet());
 app.use(cors());
@@ -40,5 +36,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/book', bookRouter);
 app.use('/customer', customerRouter);
+app.use('/borrow', borrowRouter);
 
 module.exports = app;
